@@ -55,6 +55,8 @@ html, body { background: var(--felt); }
 body {
   color: var(--ivory);
   font-family: var(--f-body);
+  word-break: keep-all;
+  overflow-wrap: break-word;
   font-size: 15px;
   line-height: 1.65;
   padding-inline: 16px;
@@ -78,7 +80,7 @@ header { display: grid; gap: 6px; }
 h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(36px, 9vw, 58px); line-height: 1.1; letter-spacing: -.01em; margin: 0; text-wrap: balance;
   color: var(--ivory); background: linear-gradient(180deg, var(--ivory) 35%, var(--brass) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 h1 .star { -webkit-text-fill-color: var(--brass); color: var(--brass); font-size: .45em; vertical-align: .9em; margin-left: .15em; }
-.lede { color: var(--muted); margin: 0; max-width: 58ch; font-size: 15.5px; line-height: 1.85; }
+.lede { color: var(--muted); margin: 0; max-width: none; font-size: 15.5px; line-height: 1.85; text-wrap: pretty; }
 .field-sub { font-size: 12px; }
 
 section.panel {
