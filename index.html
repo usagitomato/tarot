@@ -3,27 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="질문을 적고 78장 중 직접 카드를 골라, 내 AI에게 바로 붙여넣는 시기 중심 타로 리딩.">
+<meta name="description" content="별빛 아래 펼쳐지는 78장의 카드. 직접 고른 카드로 당신의 AI에게 건넬 타로 리딩 프롬프트를 만들어 보세요.">
 <meta name="theme-color" content="#0f1029">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="타로 리딩 테이블">
-<meta property="og:title" content="타로 리딩 테이블">
-<meta property="og:description" content="질문을 적고 78장 중 직접 카드를 골라, 내 AI에게 바로 붙여넣는 시기 중심 타로 리딩.">
+<meta property="og:site_name" content="밤의 아르카나">
+<meta property="og:title" content="밤의 아르카나">
+<meta property="og:description" content="별빛 아래 펼쳐지는 78장의 카드. 직접 고른 카드로 당신의 AI에게 건넬 타로 리딩 프롬프트를 만들어 보세요.">
 <meta property="og:url" content="https://ribosome-maker.github.io/tarot/">
-<meta property="og:image" content="https://ribosome-maker.github.io/tarot/og.jpg">
+<meta property="og:image" content="https://ribosome-maker.github.io/tarot/og.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="타로 리딩 테이블">
-<meta name="twitter:description" content="질문을 적고 78장 중 직접 카드를 골라, 내 AI에게 바로 붙여넣는 시기 중심 타로 리딩.">
-<meta name="twitter:image" content="https://ribosome-maker.github.io/tarot/og.jpg">
+<meta name="twitter:title" content="밤의 아르카나">
+<meta name="twitter:description" content="별빛 아래 펼쳐지는 78장의 카드. 직접 고른 카드로 당신의 AI에게 건넬 타로 리딩 프롬프트를 만들어 보세요.">
+<meta name="twitter:image" content="https://ribosome-maker.github.io/tarot/og.jpg?v=2">
 <style>[hidden]{display:none!important}img{max-width:100%}body{margin:0}</style>
 </head>
 <body>
-<title>타로 리딩 테이블</title>
+<title>밤의 아르카나</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap">
@@ -75,8 +75,11 @@ body {
 .wrap { max-width: 860px; margin: 0 auto; display: grid; gap: 28px; }
 header { display: grid; gap: 6px; }
 .eyebrow { font-size: 12px; letter-spacing: .14em; color: var(--brass); text-transform: uppercase; }
-h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(28px, 6vw, 40px); line-height: 1.2; margin: 0; text-wrap: balance; }
-.lede { color: var(--muted); margin: 0; max-width: 60ch; }
+h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(36px, 9vw, 58px); line-height: 1.1; letter-spacing: -.01em; margin: 0; text-wrap: balance;
+  color: var(--ivory); background: linear-gradient(180deg, var(--ivory) 35%, var(--brass) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+h1 .star { -webkit-text-fill-color: var(--brass); color: var(--brass); font-size: .45em; vertical-align: .9em; margin-left: .15em; }
+.lede { color: var(--muted); margin: 0; max-width: 58ch; font-size: 15.5px; line-height: 1.85; }
+.field-sub { font-size: 12px; }
 
 section.panel {
   background: linear-gradient(180deg, rgba(52,38,112,.55), var(--felt-2) 60%);
@@ -257,19 +260,18 @@ a.btn { text-decoration: none; display: inline-block; }
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">78장 · 무작위 셔플 · 정역 랜덤</div>
-    <h1>타로 리딩 테이블</h1>
-    <p class="lede">질문을 적고 카드를 섞으면, 뒷면으로 깔린 78장 중에서 직접 골라. 고른 카드는 자리마다 놓이고, 내 AI에 붙여넣기만 하면 되는 리딩 프롬프트가 만들어져.</p>
+    <h1>밤의 아르카나<span class="star" aria-hidden="true">✦</span></h1>
+    <p class="lede">마음속에 오래 머물러 있던 질문이 있나요? 질문을 적고 카드를 섞으면, 별빛 아래로 78장의 카드가 조용히 펼쳐집니다. 손끝이 머무는 카드를 한 장씩 골라 자리마다 내려놓으세요. 우연처럼 보이는 그 선택이, 지금 당신에게 필요한 이야기를 꺼내 줄 거예요. 카드가 모두 놓이면 당신의 AI에게 그대로 건넬 리딩 프롬프트가 완성됩니다.</p>
   </header>
 
   <section class="panel" id="stepAsk">
     <div class="step-head"><span class="step-no">i</span><h2>질문</h2></div>
     <div class="field" style="gap:10px">
-      <span>분야를 고르면 예시 질문이 나와</span>
+      <span class="field-sub">분야를 고르시면 예시 질문이 나와요</span>
       <div class="cats" id="cats" role="group" aria-label="질문 분야"></div>
       <div class="ex-list" id="exList" aria-label="예시 질문"></div>
     </div>
-    <label class="field" for="q">질문 (예시를 누르고 내 상황에 맞게 고쳐 써도 돼)
+    <label class="field" for="q">질문 (예시를 누르고 내 상황에 맞게 고쳐 쓰셔도 돼요)
       <textarea id="q" placeholder="예: 10월 7일에 본 면접, 10월 8일 발표에서 합격할 수 있을까?"></textarea>
     </label>
     <div class="field" style="gap:10px">
