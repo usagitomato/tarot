@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}img{max-width:100%}body{margin:0}</style>
+</head>
+<body>
+<title>타로 리딩 테이블</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap">
+<style>
+/* Layout: one narrow column like a reading table — question card on top, the spread laid out below, the reading written underneath. Single dark "midnight indigo → violet, gold for selection" look in every theme. */
+:root {
+  --felt: #0f1029;
+  --felt-2: #19173a;
+  --felt-3: #28205a;
+  --violet: #6b4fb8;
+  --brass: #e6c46a;
+  --brass-dim: #9c8448;
+  --ivory: #ece8f7;
+  --muted: #a59fc6;
+  --ink: #1c1838;
+  --paper: #f2eee4;
+  --paper-edge: #cfc5df;
+  --back: #2c1f63;
+  --back-line: rgba(230,196,106,.34);
+  --rev: #ec94ae;
+  --line: rgba(165,159,198,.24);
+  --f-display: "Gowun Batang", "Nanum Myeongjo", "AppleMyungjo", serif;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --f-numeral: "Cormorant Garamond", "Times New Roman", serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--felt); }
+body {
+  color: var(--ivory);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.65;
+  padding-inline: 16px;
+  padding-block: 28px 64px;
+  background:
+    radial-gradient(1px 1px at 12% 18%, rgba(236,232,247,.55), transparent 2px),
+    radial-gradient(1px 1px at 78% 9%, rgba(236,232,247,.45), transparent 2px),
+    radial-gradient(1.5px 1.5px at 64% 31%, rgba(230,196,106,.5), transparent 2px),
+    radial-gradient(1px 1px at 33% 42%, rgba(236,232,247,.35), transparent 2px),
+    radial-gradient(1px 1px at 90% 55%, rgba(236,232,247,.35), transparent 2px),
+    radial-gradient(1px 1px at 8% 70%, rgba(236,232,247,.3), transparent 2px),
+    radial-gradient(ellipse 90% 55% at 50% -5%, rgba(107,79,184,.42), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 100% 100%, rgba(74,50,140,.28), transparent 70%),
+    var(--felt);
+  background-attachment: fixed;
+  min-height: 100%;
+}
+.wrap { max-width: 860px; margin: 0 auto; display: grid; gap: 28px; }
+header { display: grid; gap: 6px; }
+.eyebrow { font-size: 12px; letter-spacing: .14em; color: var(--brass); text-transform: uppercase; }
+h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(28px, 6vw, 40px); line-height: 1.2; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); margin: 0; max-width: 60ch; }
+
+section.panel {
+  background: linear-gradient(180deg, rgba(52,38,112,.55), var(--felt-2) 60%);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.step-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.step-no { font-family: var(--f-numeral); font-style: italic; font-size: 22px; color: var(--brass); }
+h2 { font-family: var(--f-display); font-size: 20px; margin: 0; font-weight: 700; }
+.step-note { color: var(--muted); font-size: 13px; margin-left: auto; }
+
+label.field { display: grid; gap: 8px; font-size: 13px; color: var(--muted); }
+textarea {
+  width: 100%;
+  min-height: 92px;
+  resize: vertical;
+  background: var(--felt);
+  color: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 15px;
+}
+textarea:focus-visible, button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.cats { display: flex; flex-wrap: wrap; gap: 8px; }
+.cat {
+  font: inherit; font-size: 14px; cursor: pointer;
+  background: var(--felt); color: var(--muted);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 14px;
+}
+.cat:hover { color: var(--ivory); }
+.cat[aria-pressed="true"] { color: var(--ink); background: var(--brass); border-color: var(--brass); font-weight: 600; }
+.ex-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 6px; }
+.ex {
+  font: inherit; font-size: 14px; text-align: left; cursor: pointer;
+  background: rgba(15,16,41,.55); color: var(--ivory);
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 9px 12px; display: flex; gap: 10px; align-items: baseline;
+  animation: exIn .32s ease both;
+}
+.ex::before { content: "✦"; color: var(--brass); font-size: 11px; flex: none; }
+.ex:hover { border-color: var(--brass-dim); background: var(--felt-3); }
+.ex[aria-pressed="true"] { border-color: var(--brass); box-shadow: inset 0 0 0 1px var(--brass); }
+@keyframes exIn { from { opacity: .001; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ex { animation: none; } }
+
+.spreads { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.spread-opt {
+  text-align: left; font: inherit; cursor: pointer;
+  background: var(--felt); color: var(--ivory);
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px 14px; display: grid; gap: 2px;
+}
+.spread-opt b { font-family: var(--f-display); font-size: 15px; }
+.spread-opt span { font-size: 12px; color: var(--muted); }
+.spread-opt[aria-pressed="true"] { border-color: var(--brass); background: var(--felt-3); box-shadow: inset 0 0 0 1px var(--brass); }
+.auto-tag { font-size: 11px; color: var(--brass); }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.btn {
+  font: inherit; font-weight: 600; font-size: 15px; cursor: pointer;
+  border-radius: 10px; padding: 11px 20px;
+  background: var(--brass); color: var(--ink); border: 1px solid var(--brass);
+}
+.btn:hover { filter: brightness(1.08); }
+.btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
+.btn.ghost { background: transparent; color: var(--ivory); border-color: var(--line); }
+.btn.ghost:hover { border-color: var(--brass-dim); }
+.hint { font-size: 13px; color: var(--muted); }
+
+/* deck */
+.deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 6px;
+  padding: 4px;
+}
+.back {
+  aspect-ratio: 585 / 1000;
+  max-width: 100%;
+  border-radius: 5px;
+  border: 1px solid var(--brass-dim);
+  background:
+    radial-gradient(circle at 50% 50%, var(--brass) 0 2px, transparent 3px),
+    repeating-linear-gradient(45deg, var(--back-line) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(-45deg, var(--back-line) 0 1px, transparent 1px 7px),
+    var(--back);
+  box-shadow: 0 1px 0 rgba(0,0,0,.4);
+}
+.deck button.back { cursor: pointer; padding: 0; transition: transform .15s ease, opacity .2s; position: relative; }
+.deck button.back:hover:not(:disabled) { transform: translateY(-4px); }
+.deck button.back:disabled { opacity: .18; cursor: default; }
+.deck button.back .pick-no {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-family: var(--f-numeral); font-style: italic; font-size: 18px; color: var(--ivory);
+}
+.counter { font-variant-numeric: tabular-nums; font-family: var(--f-numeral); font-style: italic; font-size: 20px; color: var(--brass); }
+.next-pos { font-size: 14px; }
+.next-pos b { color: var(--brass); font-weight: 600; }
+
+/* spread board */
+.board { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 18px 14px; }
+.slot { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.slot-label { font-size: 12px; color: var(--muted); display: flex; gap: 6px; align-items: baseline; min-height: 2.6em; }
+.slot-label .n { font-family: var(--f-numeral); font-style: italic; font-size: 17px; color: var(--brass); }
+.card3d { perspective: 900px; aspect-ratio: 585 / 1000; max-width: 100%; }
+.card-inner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .7s cubic-bezier(.3,.7,.3,1);
+}
+.card3d.flipped .card-inner { transform: rotateY(180deg); }
+.card-inner > .side { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 8px; }
+.card-inner > .front { transform: rotateY(180deg); }
+.face {
+  width: 100%; height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 8px;
+  border: 1px solid var(--paper-edge);
+  box-shadow: inset 0 0 0 5px var(--paper), inset 0 0 0 6px var(--brass-dim);
+  display: grid; grid-template-rows: auto 1fr auto;
+  padding: 12px 8px 10px;
+  text-align: center;
+}
+.face.reversed { transform: rotate(180deg); }
+.face.photo { padding: 0; overflow: hidden; display: block; background: var(--paper); box-shadow: none; border-color: var(--brass-dim); }
+.face.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.face .num { font-family: var(--f-numeral); font-style: italic; font-size: 16px; color: var(--brass-dim); line-height: 1; }
+.face .glyph { display: grid; place-items: center; }
+.face .glyph svg { width: 46%; height: auto; }
+.face .glyph .roman { font-family: var(--f-numeral); font-style: italic; font-size: clamp(26px, 5vw, 34px); color: var(--ink); }
+.face .name { font-family: var(--f-display); font-weight: 700; font-size: 14px; line-height: 1.25; }
+.orient { font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+.orient.up { color: var(--brass); }
+.orient.rev { color: var(--rev); }
+.kw { font-size: 13px; color: var(--ivory); line-height: 1.5; }
+
+.bt-title { font-family: var(--f-display); font-size: 16px; margin: 6px 0 0; color: var(--brass); }
+
+/* reading */
+.reading { font-size: 15px; line-height: 1.8; max-width: 68ch; min-width: 0; overflow-wrap: anywhere; }
+.reading h3 { font-family: var(--f-display); font-size: 18px; margin: 22px 0 6px; color: var(--brass); }
+.reading h3:first-child { margin-top: 0; }
+.reading h4 { font-size: 15px; margin: 14px 0 4px; }
+.reading p { margin: 0 0 10px; }
+.reading ul { margin: 0 0 10px; padding-left: 20px; }
+.reading strong { color: var(--paper); }
+.thinking { color: var(--muted); font-style: italic; }
+.note { font-size: 13px; color: var(--muted); border-left: 2px solid var(--line); padding-left: 10px; }
+.flag { color: var(--rev); font-weight: 600; }
+
+.howto { font-size: 14px; }
+.howto-title { margin: 0 0 4px; color: var(--brass); font-weight: 600; }
+.howto ol { margin: 0; padding-left: 20px; color: var(--ivory); }
+.prompt-box { display: grid; gap: 10px; border: 1px solid var(--brass-dim); border-radius: 12px; padding: 14px; background: rgba(15,16,41,.55); min-width: 0; }
+.prompt-head { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+.copy-msg { color: var(--brass); font-weight: 600; }
+#promptOut { min-height: 220px; font-size: 13px; line-height: 1.6; color: var(--muted); }
+a.btn { text-decoration: none; display: inline-block; }
+.footer-note { font-size: 12px; color: var(--muted); text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-inner, .deck button.back { transition: none; }
+}
+@media (max-width: 480px) {
+  section.panel { padding: 18px 14px; }
+  .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .deck { grid-template-columns: repeat(auto-fill, minmax(34px, 1fr)); gap: 5px; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">78장 · 무작위 셔플 · 정역 랜덤</div>
+    <h1>타로 리딩 테이블</h1>
+    <p class="lede">질문을 적고 카드를 섞으면, 뒷면으로 깔린 78장 중에서 직접 골라. 고른 카드는 자리마다 놓이고, 내 AI에 붙여넣기만 하면 되는 리딩 프롬프트가 만들어져.</p>
+  </header>
+
+  <section class="panel" id="stepAsk">
+    <div class="step-head"><span class="step-no">i</span><h2>질문</h2></div>
+    <div class="field" style="gap:10px">
+      <span>분야를 고르면 예시 질문이 나와</span>
+      <div class="cats" id="cats" role="group" aria-label="질문 분야"></div>
+      <div class="ex-list" id="exList" aria-label="예시 질문"></div>
+    </div>
+    <label class="field" for="q">질문 (예시를 누르고 내 상황에 맞게 고쳐 써도 돼)
+      <textarea id="q" placeholder="예: 10월 7일에 본 면접, 10월 8일 발표에서 합격할 수 있을까?"></textarea>
+    </label>
+    <div class="field" style="gap:10px">
+      <span>스프레드 <span class="auto-tag" id="autoTag">· 분야와 질문을 보고 자동으로 골라</span></span>
+      <div class="spreads" id="spreads"></div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="shuffleBtn" type="button">카드 섞기</button>
+      <span class="hint" id="askHint"></span>
+    </div>
+  </section>
+
+  <section class="panel" id="stepPick" hidden>
+    <div class="step-head">
+      <span class="step-no">ii</span><h2 id="pickTitle">카드 고르기</h2>
+      <span class="step-note counter" id="counter">0 / 8</span>
+    </div>
+    <p class="next-pos" id="nextPos"></p>
+    <div class="deck" id="deck" role="group" aria-label="뒷면으로 놓인 카드"></div>
+    <div class="actions">
+      <button class="btn" id="randomBtn" type="button">남은 카드 랜덤으로 고르기</button>
+      <button class="btn ghost" id="reshuffleBtn" type="button">다시 섞기</button>
+    </div>
+  </section>
+
+  <section class="panel" id="stepRead" hidden>
+    <div class="step-head"><span class="step-no">iii</span><h2>펼친 카드</h2><span class="step-note" id="spreadName"></span></div>
+    <div class="board" id="board"></div>
+    <div id="btWrap" hidden>
+      <p class="bt-title">돌파구 카드</p>
+      <div class="board" id="btBoard"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="stepAi" hidden>
+    <div class="step-head"><span class="step-no">iv</span><h2>내 AI에게 해석 받기</h2></div>
+    <div class="reading" id="reading"></div>
+    <div class="howto">
+      <p class="howto-title">해석 받는 법</p>
+      <ol>
+        <li><b>프롬프트 복사</b>를 누르고</li>
+        <li>평소 쓰는 AI(Claude, ChatGPT, Gemini 등) 새 대화창을 열어서</li>
+        <li>붙여넣고 보내면 끝이야. 카드와 리딩 규칙이 다 들어 있어.</li>
+      </ol>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-head"><span id="promptLabel">리딩 프롬프트</span><span class="copy-msg" id="copyMsg" role="status"></span></div>
+      <textarea id="promptOut" readonly aria-label="AI에 붙여넣을 프롬프트"></textarea>
+      <div class="actions">
+        <button class="btn" id="copyBtn" type="button">프롬프트 복사</button>
+        <a class="btn ghost" href="https://claude.ai/new" target="_blank" rel="noopener">Claude 열기</a>
+        <a class="btn ghost" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT 열기</a>
+        <a class="btn ghost" href="https://gemini.google.com/app" target="_blank" rel="noopener">Gemini 열기</a>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" id="btBtn" type="button">돌파구 카드 2장 뽑기</button>
+      <button class="btn ghost" id="restartBtn" type="button">새 질문</button>
+    </div>
+    <p class="note" id="btNote">AI 해석 마지막에 "돌파구 카드 추천"이 나오면 돌파구 카드 2장을 뽑아봐. 그 프롬프트는 같은 대화창에 이어서 붙여넣으면 돼.</p>
+  </section>
+
+  <p class="footer-note">카드 그림은 1909년 라이더-웨이트 원판(파멜라 콜먼 스미스 그림)이야. 결과는 재미와 방향 잡기용으로 봐줘.</p>
+</div>
+
+<script>
+(() => {
+  // ---------- data ----------
+  const MAJOR = [
+    ["바보","새 출발, 겁 없는 도전","무모함, 준비 부족"],
+    ["마법사","실행력, 가진 걸 다 쓰는 때","말만 앞섬, 재주 낭비"],
+    ["여사제","아직 드러나지 않은 정보","숨은 사정, 판단 미루기"],
+    ["여황제","풍성한 결과, 키워내기","정체, 과잉 보호"],
+    ["황제","체계, 결정권을 쥠","경직, 통제 과잉"],
+    ["교황","정해진 절차, 조언자","틀을 깸, 엇나간 조언"],
+    ["연인","선택, 잘 맞는 조합","엇갈림, 우유부단"],
+    ["전차","밀어붙여서 이김","방향 상실, 과속"],
+    ["힘","끝까지 버티는 힘","자신감 부족, 감정 폭발"],
+    ["은둔자","혼자 파고드는 점검","고립, 지나친 신중"],
+    ["운명의 수레바퀴","전환점, 예상 밖 변화","엇나간 타이밍, 반복"],
+    ["정의","공정한 판정, 계약","불공정, 결과 지연"],
+    ["매달린 사람","멈춤, 관점 바꾸기","헛된 기다림"],
+    ["죽음","한 단계의 끝, 정리","끝낼 걸 붙잡고 있음"],
+    ["절제","조율, 천천히 맞춰감","균형 깨짐, 조급함"],
+    ["악마","얽매임, 집착","족쇄를 끊고 벗어남"],
+    ["탑","갑작스런 붕괴, 판이 뒤집힘","피한 위기, 미뤄진 충격"],
+    ["별","회복, 밝은 전망","기대 저하, 막연함"],
+    ["달","불확실, 오해","안개가 걷힘, 진실 드러남"],
+    ["태양","확실한 성공, 공개","늦어진 성공, 과신"],
+    ["심판","재평가, 다시 불림","미련, 결정 회피"],
+    ["세계","완성, 목표 달성","마무리 미흡, 한 끗 부족"]
+  ];
+  const ROMAN = ["0","I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI"];
+  const RANKS = ["에이스","2","3","4","5","6","7","8","9","10","시종","기사","여왕","왕"];
+  const SUITS = {
+    wands: { ko:"완드", theme:"일·추진", m:[
+      ["새 기회, 시작 신호","시작 지연, 의욕만 앞섬"],["계획 수립, 넓은 시야","계획 부족, 망설임"],["확장, 결과를 기다림","기대보다 늦은 결과"],
+      ["축하, 안정된 기반","불안정한 기반, 축하 연기"],["경쟁, 부딪힘","경쟁 회피, 내부 갈등 정리"],["승리, 인정받음","인정 지연, 체면 손상"],
+      ["자리 지키기, 방어","밀림, 버티기 한계"],["빠른 진행, 소식","지연, 엇갈린 연락"],["마지막 고비, 버팀","지침, 경계 과잉"],
+      ["과부하, 책임 과다","짐 내려놓기 또는 무너짐"],["새 소식, 호기심","나쁜 소식, 산만함"],["빠른 움직임, 추진","성급함, 지연"],
+      ["자신감, 주도적 매력","질투, 자신감 하락"],["리더십, 큰 그림","독단, 주도력 부족"]]},
+    cups: { ko:"컵", theme:"사람·관계", m:[
+      ["새 관계, 마음의 시작","막힌 교감, 공허"],["잘 맞는 상대, 파트너십","엇갈림, 불균형"],["축하 모임, 협력","과잉, 제3자 개입"],
+      ["무관심, 놓친 제안","새 제안 수용, 다시 관심"],["상실, 아쉬움","회복 시작, 남은 것 보기"],["옛 인연, 익숙함","과거에서 벗어남"],
+      ["선택지 과다, 환상","현실 직시, 결정"],["떠남, 더 나은 것을 찾음","떠날지 망설임"],["소원 성취, 만족","기대 미달, 자만"],
+      ["행복한 결말, 화목","겉만 화목, 불화"],["반가운 연락, 제안","실망스러운 소식, 미숙함"],["제안, 다가오는 사람","빈말, 변덕"],
+      ["배려, 직관","감정 과잉, 의존"],["성숙한 대처, 포용","감정 조종, 냉담"]]},
+    swords: { ko:"소드", theme:"판단·갈등", m:[
+      ["명확한 판단, 돌파","혼란, 잘못된 판단"],["결정 보류, 교착","결정 압박, 교착 해소"],["상처, 이별","회복, 상처 정리"],
+      ["휴식, 재정비","휴식 끝, 재가동"],["이겨도 손해, 갈등","화해, 갈등 마무리"],["이동, 나아짐","이동 지연, 문제 반복"],
+      ["꼼수, 몰래 움직임","들킴, 정면 돌파"],["묶여 있음, 스스로 만든 제약","풀려남, 탈출"],["걱정, 잠 못 듦","걱정 해소, 최악은 지나감"],
+      ["바닥, 끝","바닥 찍고 회복"],["정보 수집, 경계","소문, 성급한 말"],["돌진, 빠른 결정","무리수, 충돌"],
+      ["냉철한 판단, 독립","날 선 말, 차가움"],["논리, 권위 있는 결정","독단, 권한 남용"]]},
+    pentacles: { ko:"펜타클", theme:"돈·실무", m:[
+      ["실속 있는 기회, 수입","놓친 기회, 계획 부실"],["여러 일 동시 굴리기","과부하, 우선순위 혼란"],["협업, 실력 인정","협업 불화, 평가 미흡"],
+      ["지키기, 안정","인색함, 놓아야 할 때"],["어려움, 소외","회복, 도움의 손길"],["주고받기, 지원","불공정한 거래, 빚"],
+      ["중간 점검, 기다림","성과 부진, 조급함"],["숙련, 성실한 노력","반복에 지침, 대충함"],["자립, 여유","불안정, 과소비"],
+      ["장기적 안정, 기반","기반 흔들림"],["배움, 실무 시작","게으름, 계획만 함"],["꾸준함, 신뢰","정체, 지나친 신중"],
+      ["실용, 돌봄","일과 생활 불균형"],["재정적 성공, 안정된 권위","집착, 경직"]]}
+  };
+  const DECK = [];
+  const MAJOR_FILES = ["fool","magician","high-priestess","empress","emperor","hierophant","lovers","chariot","strength","hermit","wheel-of-fortune","justice","hanged-man","death","temperance","devil","tower","star","moon","sun","judgement","world"];
+  const RANK_FILES = ["ace","02","03","04","05","06","07","08","09","10","page","knight","queen","king"];
+  MAJOR.forEach((c, i) => DECK.push({ name:c[0], up:c[1], rev:c[2], major:true, num:ROMAN[i], img:`cards/${String(i).padStart(2, "0")}-${MAJOR_FILES[i]}.jpg` }));
+  for (const [key, s] of Object.entries(SUITS)) {
+    RANKS.forEach((r, i) => DECK.push({ name:`${s.ko} ${r}`, up:s.m[i][0], rev:s.m[i][1], major:false, suit:key, num: i < 10 ? (i === 0 ? "A" : String(i+1)) : r, img:`cards/${key}-${RANK_FILES[i]}.jpg` }));
+  }
+
+  // kw: 질문에 이 말이 들어 있으면 이 스프레드를 자동으로 고름
+  const SPREADS = {
+    // 직업·취업
+    job_result: { name:"합격·발표 스프레드", desc:"8장 · 면접, 서류, 발표 결과와 시점", kw:/(합격|붙|발표|면접|서류|결과|평가|승진)/,
+      pos:["지금 내 위치","평가하는 쪽의 기준","내가 남긴 인상","경쟁자 상황","걸림돌","숨은 변수","발표 무렵의 전개","최종 결과"] },
+    job_choice: { name:"이직·직장 선택", desc:"8장 · 남을지 옮길지, A와 B 비교", kw:/(이직|남을까|옮길|중에|어디가|어디로|vs|아니면)/i,
+      pos:["지금 직장의 현실","A를 고르면 3개월 동안","A의 결과","B를 고르면 3개월 동안","B의 결과","조건·연봉 차이","놓치고 있는 점","최선의 방향"] },
+    job_path: { name:"커리어 3개월 타임라인", desc:"7장 · 새 직장 적응, 앞으로의 일", kw:/(3개월|적응|새 직장|앞으로|커리어)/,
+      pos:["지금 일의 상태","나의 강점","보완할 점","1개월 뒤","2개월 뒤","3개월 뒤","잡아야 할 기회"] },
+    // 학업·시험
+    exam: { name:"시험 합격 스프레드", desc:"7장 · 시험, 자격증, 점수 결과", kw:/(시험|합격|자격증|점수|어학|토익|붙)/,
+      pos:["지금 실력","부족한 부분","남은 기간의 공부 전개","시험 당일 변수","난이도·경쟁","결과 발표 무렵","최종 결과"] },
+    study_plan: { name:"공부 점검 스프레드", desc:"6장 · 공부 방식, 과제·논문 진행", kw:/(방식|공부법|과제|논문|마감|계획)/,
+      pos:["지금 공부 방식","잘 되고 있는 점","새고 있는 시간","바꿔야 할 것","한 달 뒤 모습","목표 달성 여부"] },
+    study_choice: { name:"진로 선택 스프레드", desc:"7장 · 진학, 전공, 진로 비교", kw:/(대학원|진학|전공|진로|중에|아니면|할까)/,
+      pos:["지금 상황","A를 고르면 1년 동안","A의 결과","B를 고르면 1년 동안","B의 결과","현실 조건(돈·시간)","최선의 방향"] },
+    // 연애
+    love_heart: { name:"상대 속마음 스프레드", desc:"6장 · 그 사람의 생각과 다음 행동", kw:/(속마음|생각|어떻게 생각|고백|좋아|마음)/,
+      pos:["상대가 보는 나","상대의 실제 생각","상대가 망설이는 이유","상대의 다음 행동","내가 할 행동","관계의 결과"] },
+    love_cup: { name:"컵 오브 릴레이션십 + 3개월", desc:"9장 · 두 사람의 관계와 3개월 전개", kw:/(3개월|앞으로|관계|사이|연애)/,
+      pos:["나의 입장","상대의 입장","관계의 바탕","지나간 일","상대가 실제로 원하는 것","걸림돌","1개월 뒤","2개월 뒤","3개월 뒤"] },
+    love_reunion: { name:"재회 스프레드", desc:"7장 · 멀어진 사람과 다시 이어질지", kw:/(재회|다시|연락 ?끊|헤어|전남친|전여친|이어질)/,
+      pos:["멀어진 진짜 원인","지금 상대의 상황","상대가 나를 떠올리는지","다시 연락이 닿는 계기","다시 만날 때의 걸림돌","재회가 가능한 시기","결과"] },
+    love_new: { name:"새 인연 스프레드", desc:"6장 · 새로운 사람이 언제, 어디서", kw:/(새로운|새 인연|인연|언제쯤|소개|만남)/,
+      pos:["지금 나의 상태","인연이 나타날 곳","그 사람의 특징","만나게 되는 시기","주의할 점","관계의 전개"] },
+    love_choice: { name:"연애 결정 스프레드", desc:"7장 · 계속할지 정리할지", kw:/(정리|계속|헤어질|그만|할까)/,
+      pos:["지금 관계의 현실","계속하면 3개월 동안","계속했을 때 결과","정리하면 3개월 동안","정리했을 때 결과","놓치고 있는 점","최선의 방향"] },
+    // 인간관계
+    people_conflict: { name:"갈등 해결 스프레드", desc:"7장 · 다툼, 갈등이 어떻게 풀릴지", kw:/(갈등|다툰|싸움|회복|문제|화해)/,
+      pos:["갈등의 진짜 원인","나의 입장","상대의 입장","주변 사람들의 반응","걸림돌","풀리는 계기","결과"] },
+    people_trust: { name:"신뢰 점검 스프레드", desc:"6장 · 이 사람을 믿어도 될지", kw:/(믿|신뢰|같이 일|동업|사람 어때)/,
+      pos:["이 사람의 겉모습","실제 의도","함께할 때 장점","위험 요소","3개월 뒤 관계","결론"] },
+    people_new: { name:"새 환경 적응 스프레드", desc:"6장 · 새 팀, 새 모임에서의 관계", kw:/(새 팀|새로운 사람|적응|잘 지낼|모임)/,
+      pos:["지금 분위기","나를 보는 시선","도움이 될 사람","조심할 상황","1개월 뒤","3개월 뒤"] },
+    // 돈·사업
+    money_goal: { name:"재물 타임라인", desc:"7장 · 돈이 모이고 들어오는 시기", kw:/(모을|목표 금액|돈|저축|돌려받|들어올)/,
+      pos:["지금 돈 상황","들어오는 돈","새는 돈","1개월 뒤","2개월 뒤","3개월 뒤","목표 달성 여부"] },
+    money_biz: { name:"사업·거래 스프레드", desc:"8장 · 사업 수익, 계약 성사", kw:/(사업|수익|계약|거래|매출|성사)/,
+      pos:["지금 사업(거래) 상태","고객·거래처 반응","경쟁 상황","수익 구조","걸림돌","숨은 기회","성사·수익 시기","최종 결과"] },
+    money_choice: { name:"지출·투자 결정", desc:"7장 · 쓸지 미룰지, 부업할지", kw:/(지출|부업|살까|미룰|할까|아니면)/,
+      pos:["지금 상황","A를 하면 들고 나는 돈","A의 결과","B를 하면 들고 나는 돈","B의 결과","위험 요소","최선의 방향"] },
+    // 선택·결정
+    choice: { name:"선택 비교 스프레드", desc:"7장 · A와 B 중 어느 쪽이 나을지", kw:/(중에|vs|아니면|어느 ?쪽|둘 중)/i,
+      pos:["지금 상황","A를 고르면 전개","A의 결과","B를 고르면 전개","B의 결과","놓치고 있는 점","최선의 방향"] },
+    do_or_not: { name:"할까 말까 스프레드", desc:"6장 · 하나를 할지 말지", kw:/(해도 될까|받아들|할까 말까|버틸까|그만둘|갈까)/,
+      pos:["지금 상황","하면 생기는 일","했을 때 결과","안 하면 생기는 일","안 했을 때 결과","최선의 방향"] },
+    timing: { name:"시기 선택 스프레드", desc:"6장 · 지금 할지 기다릴지", kw:/(지금|기다릴|언제|시기|타이밍)/,
+      pos:["준비 상태","지금 시작하면","한 달 뒤 시작하면","세 달 뒤 시작하면","걸림돌","가장 좋은 시점"] },
+    // 전체 운세
+    month_weeks: { name:"이번 달 주간 스프레드", desc:"6장 · 이번 달을 주 단위로", kw:/(이번 ?달|한 ?달|이달)/,
+      pos:["이번 달 전체","1주차","2주차","3주차","4주차","이번 달 조언"] },
+    quarter: { name:"3개월 타임라인", desc:"7장 · 앞으로 3개월 월별로", kw:/(3개월|석 ?달|분기|하반기)/,
+      pos:["지금 상황","1개월 차","2개월 차","3개월 차","잡아야 할 기회","조심할 일","조언"] },
+    celtic: { name:"셀틱 크로스", desc:"10장 · 상황 전체를 깊게", kw:/(전체|전반|짚어|종합)/,
+      pos:["현재","가로막는 것","바탕","지나가는 일","가능한 목표","가까운 미래","나의 태도","주변 환경","기대와 두려움","최종 결과"] }
+  };
+  const BT_POS = ["돌파구 ① 할 일","돌파구 ② 피할 일"];
+
+  // ---------- randomness ----------
+  function randInt(n) {
+    const lim = Math.floor(0x100000000 / n) * n;
+    const a = new Uint32Array(1);
+    do { crypto.getRandomValues(a); } while (a[0] >= lim);
+    return a[0] % n;
+  }
+  function shuffled() {
+    const arr = DECK.map((_, i) => i);
+    for (let i = arr.length - 1; i > 0; i--) { const j = randInt(i + 1); [arr[i], arr[j]] = [arr[j], arr[i]]; }
+    return arr.map(id => ({ id, rev: randInt(2) === 1 }));
+  }
+
+  // ---------- state ----------
+  const S = { spread:"job_result", manualSpread:false, deck:[], picks:[], bt:[], mode:"main", reading:"", ctl:null };
+  const $ = id => document.getElementById(id);
+  const q = $("q");
+
+  // ---------- spread chooser ----------
+  function catSpreads() {
+    const c = CATS.find(c => c.key === S.cat);
+    const list = [...c.spreads];
+    if (!list.includes("celtic")) list.push("celtic");
+    return list;
+  }
+  function guessSpread(text) {
+    const list = catSpreads();
+    return list.find(k => SPREADS[k].kw && SPREADS[k].kw.test(text)) || list[0];
+  }
+  function renderSpreads() {
+    const box = $("spreads"); box.textContent = "";
+    for (const k of catSpreads()) {
+      const s = SPREADS[k];
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "spread-opt"; b.setAttribute("aria-pressed", String(k === S.spread));
+      const t = document.createElement("b"); t.textContent = s.name;
+      const d = document.createElement("span"); d.textContent = s.desc;
+      b.append(t, d);
+      b.onclick = () => { S.spread = k; S.manualSpread = true; $("autoTag").textContent = "· 직접 골랐어"; renderSpreads(); };
+      box.append(b);
+    }
+  }
+  q.addEventListener("input", () => {
+    document.querySelectorAll(".ex").forEach(x => x.setAttribute("aria-pressed", String(x.textContent === q.value)));
+    if (S.manualSpread) return;
+    const g = guessSpread(q.value);
+    if (g !== S.spread) { S.spread = g; renderSpreads(); }
+  });
+  // ---------- categories ----------
+  const CATS = [
+    { key:"job", name:"직업·취업", spreads:["job_result","job_choice","job_path"], ex:[
+      ["이번 면접 합격할 수 있을까?","job_result"],
+      ["서류 발표에서 붙을 수 있을까?","job_result"],
+      ["올해 안에 원하는 곳에 취업할 수 있을까?","job_result"],
+      ["지금 회사에 남을까, 이직할까?","job_choice"],
+      ["A기관과 B기관 중 어디가 나한테 더 맞을까?","job_choice"],
+      ["이번 평가나 승진 결과는 어떻게 나올까?","job_result"],
+      ["새 직장에서 첫 3개월은 어떻게 될까?","job_path"]]},
+    { key:"study", name:"학업·시험", spreads:["exam","study_plan","study_choice"], ex:[
+      ["이번 시험 합격할 수 있을까?","exam"],
+      ["자격증 공부, 언제쯤 결과가 나올까?","exam"],
+      ["어학 점수 목표를 이번에 달성할 수 있을까?","exam"],
+      ["대학원 진학할까, 바로 취업할까?","study_choice"],
+      ["지금 공부 방식 그대로 가도 될까?","study_plan"],
+      ["논문이나 과제 마감 무사히 끝낼 수 있을까?","study_plan"]]},
+    { key:"love", name:"연애", spreads:["love_heart","love_cup","love_reunion","love_new","love_choice"], ex:[
+      ["그 사람은 나를 어떻게 생각할까?","love_heart"],
+      ["고백하면 잘 될까?","love_heart"],
+      ["이 사람과 앞으로 3개월 어떻게 될까?","love_cup"],
+      ["연락 끊긴 사람과 다시 이어질 수 있을까?","love_reunion"],
+      ["새로운 인연은 언제쯤 생길까?","love_new"],
+      ["지금 연애 계속할까, 정리할까?","love_choice"]]},
+    { key:"people", name:"인간관계", spreads:["people_conflict","people_trust","people_new"], ex:[
+      ["직장 동료와의 갈등, 어떻게 풀릴까?","people_conflict"],
+      ["다툰 친구와 관계를 회복할 수 있을까?","people_conflict"],
+      ["가족과의 문제, 앞으로 어떻게 될까?","people_conflict"],
+      ["새 팀 사람들과 잘 지낼 수 있을까?","people_new"],
+      ["이 사람을 믿고 같이 일해도 될까?","people_trust"]]},
+    { key:"money", name:"돈·사업", spreads:["money_goal","money_biz","money_choice"], ex:[
+      ["올해 안에 목표 금액을 모을 수 있을까?","money_goal"],
+      ["빌려준 돈 돌려받을 수 있을까?","money_goal"],
+      ["지금 하는 사업, 3개월 안에 수익이 날까?","money_biz"],
+      ["이번 계약이나 거래 성사될까?","money_biz"],
+      ["부업을 시작할까, 지금 일에 집중할까?","money_choice"],
+      ["큰 지출을 지금 할까, 미룰까?","money_choice"]]},
+    { key:"choice", name:"선택·결정", spreads:["choice","do_or_not","timing"], ex:[
+      ["A랑 B 중에 뭘 고르는 게 나을까?","choice"],
+      ["이사를 갈까, 지금 집에 있을까?","choice"],
+      ["계속 버틸까, 그만둘까?","choice"],
+      ["이 제안을 받아들여도 될까?","do_or_not"],
+      ["지금 시작할까, 조금 더 기다릴까?","timing"]]},
+    { key:"general", name:"전체 운세", spreads:["month_weeks","quarter","celtic"], ex:[
+      ["이번 달 나한테 어떤 일이 생길까?","month_weeks"],
+      ["다음 3개월 동안 가장 신경 써야 할 일은?","quarter"],
+      ["올해 하반기는 전체적으로 어떻게 될까?","celtic"],
+      ["지금 내 상황 전체를 짚어줘","celtic"]]}
+  ];
+  S.cat = "job";
+  function renderCats() {
+    const box = $("cats"); box.textContent = "";
+    CATS.forEach(c => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "cat"; b.textContent = c.name;
+      b.setAttribute("aria-pressed", String(c.key === S.cat));
+      b.onclick = () => { S.cat = c.key; S.manualSpread = false; S.spread = guessSpread(q.value); $("autoTag").textContent = "· 분야와 질문을 보고 자동으로 골라"; renderCats(); renderExamples(); renderSpreads(); };
+      box.append(b);
+    });
+  }
+  function renderExamples() {
+    const list = $("exList"); list.textContent = "";
+    const cat = CATS.find(c => c.key === S.cat);
+    cat.ex.forEach(([text, spread], i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "ex";
+      b.style.animationDelay = (i * 45) + "ms";
+      b.setAttribute("aria-pressed", String(q.value === text));
+      const t = document.createElement("span"); t.textContent = text; b.append(t);
+      b.onclick = () => {
+        q.value = text;
+        S.spread = spread; S.manualSpread = true;
+        $("autoTag").textContent = "· 예시 질문에 맞춰 골랐어";
+        renderSpreads();
+        list.querySelectorAll(".ex").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        $("askHint").textContent = "";
+      };
+      list.append(b);
+    });
+  }
+  function catName() { const c = CATS.find(c => c.key === S.cat); return c ? c.name : ""; }
+
+  // ---------- card faces ----------
+  const GLYPH = {
+    wands: '<svg viewBox="0 0 40 60" aria-hidden="true"><path d="M20 4v52" stroke="#1c1838" stroke-width="3" stroke-linecap="round"/><path d="M20 14l-7-6M20 22l8-6M20 32l-7-5" stroke="#9c8448" stroke-width="2" stroke-linecap="round" fill="none"/></svg>',
+    cups: '<svg viewBox="0 0 40 60" aria-hidden="true"><path d="M8 10h24c0 14-5 22-12 22S8 24 8 10z" fill="none" stroke="#1c1838" stroke-width="2.5"/><path d="M20 32v14M12 50h16" stroke="#1c1838" stroke-width="2.5" stroke-linecap="round"/><path d="M11 14h18" stroke="#9c8448" stroke-width="2"/></svg>',
+    swords: '<svg viewBox="0 0 40 60" aria-hidden="true"><path d="M20 4l3 6v32h-6V10z" fill="none" stroke="#1c1838" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 42h20" stroke="#9c8448" stroke-width="3" stroke-linecap="round"/><path d="M20 44v10" stroke="#1c1838" stroke-width="3" stroke-linecap="round"/></svg>',
+    pentacles: '<svg viewBox="0 0 40 60" aria-hidden="true"><circle cx="20" cy="30" r="15" fill="none" stroke="#1c1838" stroke-width="2.4"/><path d="M20 17l3.8 11.7H36l-9.9 7.2 3.8 11.7L20 40.4l-9.9 7.2 3.8-11.7L4 28.7h12.2z" transform="translate(4.4 1.6) scale(.78)" fill="none" stroke="#9c8448" stroke-width="2" stroke-linejoin="round"/></svg>'
+  };
+  function cardFace(c, rev) {
+    const card = DECK[c];
+    const photo = document.createElement("div");
+    photo.className = "face photo" + (rev ? " reversed" : "");
+    const img = document.createElement("img");
+    img.src = card.img; img.alt = card.name + (rev ? " 역방향" : ""); img.decoding = "async";
+    img.onerror = () => photo.replaceWith(drawnFace(c, rev));
+    photo.append(img);
+    return photo;
+  }
+  function drawnFace(c, rev) {
+    const card = DECK[c];
+    const face = document.createElement("div");
+    face.className = "face" + (rev ? " reversed" : "");
+    const num = document.createElement("div"); num.className = "num"; num.textContent = card.major ? "" : card.num;
+    const g = document.createElement("div"); g.className = "glyph";
+    if (card.major) { const r = document.createElement("span"); r.className = "roman"; r.textContent = card.num; g.append(r); }
+    else g.innerHTML = GLYPH[card.suit];
+    const n = document.createElement("div"); n.className = "name"; n.textContent = card.name;
+    face.append(num, g, n);
+    return face;
+  }
+  function slotEl(index, label, pick) {
+    const card = DECK[pick.id];
+    const slot = document.createElement("div"); slot.className = "slot";
+    const lab = document.createElement("div"); lab.className = "slot-label";
+    const n = document.createElement("span"); n.className = "n"; n.textContent = index;
+    const t = document.createElement("span"); t.textContent = label;
+    lab.append(n, t);
+    const c3 = document.createElement("div"); c3.className = "card3d";
+    const inner = document.createElement("div"); inner.className = "card-inner";
+    const back = document.createElement("div"); back.className = "side back";
+    const front = document.createElement("div"); front.className = "side front"; front.append(cardFace(pick.id, pick.rev));
+    inner.append(back, front); c3.append(inner);
+    const o = document.createElement("div"); o.className = "orient " + (pick.rev ? "rev" : "up"); o.textContent = card.name + " · " + (pick.rev ? "역방향" : "정방향");
+    const kw = document.createElement("div"); kw.className = "kw"; kw.textContent = pick.rev ? card.rev : card.up;
+    slot.append(lab, c3, o, kw);
+    return { slot, c3 };
+  }
+  function flipAll(list) {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    list.forEach((c3, i) => setTimeout(() => c3.classList.add("flipped"), reduce ? 0 : 250 + i * 260));
+  }
+
+  // ---------- picking ----------
+  function needCount() { return S.mode === "bt" ? 2 : SPREADS[S.spread].pos.length; }
+  function currentPicks() { return S.mode === "bt" ? S.bt : S.picks; }
+  function posNames() { return S.mode === "bt" ? BT_POS : SPREADS[S.spread].pos; }
+  function usedSet() { return new Set([...S.picks, ...S.bt].map(p => p.id)); }
+
+  function renderDeck() {
+    const deck = $("deck"); deck.textContent = "";
+    const picks = currentPicks(); const used = usedSet();
+    const order = new Map(picks.map((p, i) => [p.id, i + 1]));
+    S.deck.forEach((d, i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "back";
+      b.setAttribute("aria-label", `${i + 1}번째 자리 카드`);
+      if (used.has(d.id)) {
+        b.disabled = true;
+        if (order.has(d.id)) { const s = document.createElement("span"); s.className = "pick-no"; s.textContent = order.get(d.id); b.append(s); b.style.opacity = ".45"; }
+      }
+      b.onclick = () => pick(d);
+      deck.append(b);
+    });
+    const need = needCount();
+    $("counter").textContent = `${picks.length} / ${need}`;
+    const names = posNames();
+    $("nextPos").innerHTML = "";
+    if (picks.length < need) {
+      $("nextPos").append(document.createTextNode(`${picks.length + 1}번째 자리 `));
+      const b = document.createElement("b"); b.textContent = names[picks.length]; $("nextPos").append(b);
+      $("nextPos").append(document.createTextNode(" 에 놓을 카드를 골라."));
+    }
+  }
+  function pick(d) {
+    const picks = currentPicks();
+    if (picks.length >= needCount() || usedSet().has(d.id)) return;
+    picks.push(d);
+    new Image().src = DECK[d.id].img;
+    renderDeck();
+    if (picks.length === needCount()) {
+      $("randomBtn").disabled = true;
+      setTimeout(S.mode === "bt" ? revealBreakthrough : revealMain, 450);
+    }
+  }
+  let randomTimer = null;
+  $("randomBtn").onclick = () => {
+    $("randomBtn").disabled = true;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const step = () => {
+      if (currentPicks().length >= needCount()) { randomTimer = null; return; }
+      const used = usedSet();
+      const free = S.deck.filter(d => !used.has(d.id));
+      pick(free[randInt(free.length)]);
+      randomTimer = setTimeout(step, reduce ? 0 : 220);
+    };
+    step();
+  };
+
+  function startPicking() {
+    if (randomTimer) { clearTimeout(randomTimer); randomTimer = null; }
+    $("randomBtn").disabled = false;
+    S.deck = shuffled(); S.picks = []; S.bt = []; S.mode = "main"; S.reading = "";
+    $("pickTitle").textContent = "카드 고르기";
+    $("stepPick").hidden = false; $("stepRead").hidden = true; $("stepAi").hidden = true; $("btWrap").hidden = true;
+    $("reshuffleBtn").hidden = false;
+    renderDeck();
+    $("stepPick").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  $("shuffleBtn").onclick = () => {
+    if (!q.value.trim()) { $("askHint").textContent = "질문을 먼저 적어줘. 한 줄이면 충분해."; q.focus(); return; }
+    $("askHint").textContent = "";
+    startPicking();
+  };
+  $("reshuffleBtn").onclick = startPicking;
+
+  function revealMain() {
+    $("stepPick").hidden = true;
+    const sp = SPREADS[S.spread];
+    $("spreadName").textContent = sp.name;
+    const board = $("board"); board.textContent = "";
+    const c3s = S.picks.map((p, i) => { const { slot, c3 } = slotEl(i + 1, sp.pos[i], p); board.append(slot); return c3; });
+    $("stepRead").hidden = false; $("stepAi").hidden = false; $("btWrap").hidden = true;
+    $("btBtn").hidden = false; $("btNote").hidden = false;
+    renderSummary();
+    setPrompt("리딩 프롬프트", mainPrompt());
+    $("stepRead").scrollIntoView({ behavior: "smooth", block: "start" });
+    flipAll(c3s);
+  }
+  function revealBreakthrough() {
+    $("stepPick").hidden = true;
+    const bb = $("btBoard"); bb.textContent = "";
+    const c3s = S.bt.map((p, i) => { const { slot, c3 } = slotEl("+" + (i + 1), BT_POS[i], p); bb.append(slot); return c3; });
+    $("btWrap").hidden = false; $("btBtn").hidden = true; $("btNote").hidden = true;
+    appendSummaryBt();
+    setPrompt("돌파구 프롬프트 · 아까 그 대화창에 이어서 붙여넣어", btPrompt());
+    $("btWrap").scrollIntoView({ behavior: "smooth", block: "start" });
+    flipAll(c3s);
+  }
+  $("btBtn").onclick = () => {
+    S.mode = "bt"; S.bt = [];
+    $("pickTitle").textContent = "돌파구 카드 고르기";
+    $("reshuffleBtn").hidden = true;
+    $("randomBtn").disabled = false;
+    $("stepPick").hidden = false;
+    renderDeck();
+    $("stepPick").scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  $("restartBtn").onclick = () => {
+    if (randomTimer) { clearTimeout(randomTimer); randomTimer = null; }
+    $("stepPick").hidden = true; $("stepRead").hidden = true; $("stepAi").hidden = true;
+    S.manualSpread = false; $("autoTag").textContent = "· 분야와 질문을 보고 자동으로 골라";
+    q.value = ""; renderSpreads(); renderExamples(); window.scrollTo({ top: 0, behavior: "smooth" }); q.focus();
+  };
+
+  // ---------- text helpers ----------
+  function esc(s) { return s.replace(/[&<>"']/g, ch => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[ch])); }
+  function md(src) {
+    const out = []; let list = false; let para = [];
+    const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    const flushP = () => { if (para.length) { out.push("<p>" + para.map(inline).join("<br>") + "</p>"); para = []; } };
+    const flushL = () => { if (list) { out.push("</ul>"); list = false; } };
+    for (const raw of src.split("\n")) {
+      const line = raw.trimEnd();
+      if (/^#{1,2}\s/.test(line)) { flushP(); flushL(); out.push("<h3>" + inline(line.replace(/^#+\s/, "")) + "</h3>"); }
+      else if (/^\s*[-*]\s/.test(line)) { flushP(); if (!list) { out.push("<ul>"); list = true; } out.push("<li>" + inline(line.replace(/^\s*[-*]\s/, "")) + "</li>"); }
+      else if (!line.trim()) { flushP(); flushL(); }
+      else { flushL(); para.push(line); }
+    }
+    flushP(); flushL();
+    return out.join("");
+  }
+  function cardLines(picks, names) {
+    return picks.map((p, i) => `${i + 1}. ${names[i]}: ${DECK[p.id].name} (${p.rev ? "역방향" : "정방향"})`).join("\n");
+  }
+  function today() {
+    const d = new Date();
+    return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
+  }
+
+  // ---------- prompts ----------
+  const RULES = `너는 타로 리더야. 아래 원칙을 반드시 지켜서 리딩해줘.
+1. 지금 기분이나 감정 해석은 빼고, 앞으로 상황이 어떻게 전개되고 언제 바뀌는지 시기 중심으로 읽어.
+2. 위로나 공감 표현은 하지 마. 결과가 좋지 않으면 극복할 구체적인 방법을 제시해.
+3. 반말을 쓰되 딱딱하지 않은 친한 친구 말투로 써.
+4. '감정선', '기운', '기운이 올라간다', '운의 흐름' 같은 추상적이거나 명리학적인 말은 절대 쓰지 마. 실제 생활 속 예시로 풀어.
+5. 카드는 웹페이지에서 이미 무작위로 뽑았어. 카드를 바꾸거나 새로 뽑지 마.
+6. 자리 이름에 A, B가 있으면 A는 질문에서 먼저 나온 선택지, B는 나중에 나온 선택지야. 해석할 때 A, B 대신 실제 선택지 이름으로 불러.
+7. 자리 이름이 뜻하는 역할에 맞춰 각 카드를 해석해.`;
+  function mainPrompt() {
+    const sp = SPREADS[S.spread];
+    return `${RULES}
+
+[오늘 날짜] ${today()}
+[분야] ${catName()}
+[질문] ${q.value.trim()}
+[스프레드] ${sp.name}
+[뽑은 카드 — 자리: 카드 (방향)]
+${cardLines(S.picks, sp.pos)}
+
+[답변 형식] 아래 순서대로, 전체 900~1500자.
+1) 결론: 한두 문장으로 결과와 가능성을 분명히.
+2) 카드별 해석: 자리 순서대로, 카드마다 2~3문장. 실제 상황 예시를 섞어서.
+3) 시기: 오늘 날짜 기준으로 언제 무엇이 바뀌는지 주 단위나 날짜로 구체적으로.
+4) 해결책: 바로 실행할 수 있는 행동 2~3개.
+5) 다음에 볼 질문: 이어서 보면 좋을 질문 2개.
+결과가 좋지 않거나 애매하면 맨 마지막 줄에 "돌파구 카드 추천"이라고 적어줘.`;
+  }
+  function btPrompt() {
+    return `앞의 리딩에 이어서, 결과를 바꿀 돌파구 카드 2장을 웹페이지에서 무작위로 새로 뽑았어. 앞에서 지킨 리딩 원칙 그대로 해석해줘.
+
+[질문] ${q.value.trim()}
+[돌파구 카드]
+${cardLines(S.bt, BT_POS)}
+
+[답변 형식] 500~900자.
+- 카드마다 구체적으로 무엇을 하고 무엇을 피해야 하는지, 언제까지 해야 하는지 실제 행동으로.
+- 마지막에 한 줄로 "이렇게 하면 무엇이 달라지는지" 정리.
+(혹시 앞의 리딩이 없는 새 대화라면, 내 원래 카드는 이거야: ${SPREADS[S.spread].name} / ${S.picks.map((p, i) => `${SPREADS[S.spread].pos[i]}=${DECK[p.id].name}${p.rev ? "(역)" : ""}`).join(", ")})`;
+  }
+  function setPrompt(label, text) {
+    $("promptLabel").textContent = label;
+    $("promptOut").value = text;
+    $("copyMsg").textContent = "";
+  }
+  $("copyBtn").onclick = () => {
+    const box = $("promptOut"); const msg = $("copyMsg");
+    const fallback = () => { box.focus(); box.select(); msg.textContent = "전체 선택해뒀어. 복사(Ctrl+C, 길게 눌러 복사)해줘."; };
+    try {
+      navigator.clipboard.writeText(box.value).then(() => { msg.textContent = "복사했어! AI 창에 붙여넣어."; }, fallback);
+    } catch { fallback(); }
+  };
+
+  // ---------- quick summary from card meanings ----------
+  function renderSummary() {
+    const sp = SPREADS[S.spread]; const picks = S.picks;
+    const majors = picks.filter(p => DECK[p.id].major).length;
+    const revs = picks.filter(p => p.rev).length;
+    const suitCount = {};
+    picks.forEach(p => { const s = DECK[p.id].suit; if (s) suitCount[s] = (suitCount[s] || 0) + 1; });
+    const top = Object.entries(suitCount).sort((a, b) => b[1] - a[1])[0];
+    const last = picks[picks.length - 1]; const lc = DECK[last.id];
+    const lines = ["## 한눈에 보기"];
+    lines.push(`- 메이저 카드 ${majors}장 / ${picks.length}장: ${majors / picks.length >= 0.4 ? "내 손을 떠난 큰 변화가 걸린 일이야." : "내가 움직이는 만큼 바뀌는 일이야."}`);
+    lines.push(`- 역방향 ${revs}장: ${revs > picks.length / 2 ? "막히거나 늦어지는 구간이 많아. 일정에 여유를 둬." : "큰 막힘 없이 진행되는 편이야."}`);
+    if (top) lines.push(`- ${SUITS[top[0]].ko}가 ${top[1]}장으로 가장 많아: 이번 일의 핵심은 **${SUITS[top[0]].theme}** 쪽이야.`);
+    lines.push(`- 마지막 자리(${sp.pos[sp.pos.length - 1]}): **${lc.name} ${last.rev ? "역방향" : "정방향"}** · ${last.rev ? lc.rev : lc.up}`);
+    $("reading").innerHTML = md(lines.join("\n"));
+  }
+  function appendSummaryBt() {
+    const lines = ["## 돌파구 카드 키워드"];
+    S.bt.forEach((p, i) => { const c = DECK[p.id]; lines.push(`- **${BT_POS[i]} · ${c.name}(${p.rev ? "역방향" : "정방향"})**: ${p.rev ? c.rev : c.up}`); });
+    const d = document.createElement("div"); d.innerHTML = md(lines.join("\n")); $("reading").append(d);
+  }
+
+  // ---------- boot ----------
+  renderSpreads();
+  renderCats();
+  renderExamples();
+})();
+</script>
+
+</body>
+</html>
